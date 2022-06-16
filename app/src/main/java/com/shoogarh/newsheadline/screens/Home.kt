@@ -24,6 +24,7 @@ import com.shoogarh.newsheadline.services.RestApiService
 import com.shoogarh.newsheadline.utils.DEFAULT_IMAGE
 import com.shoogarh.newsheadline.utils.LoadPicture
 import com.shoogarh.newsheadline.utils.Screen
+import com.shoogarh.newsheadline.widgets.ShowProgressBar
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -124,16 +125,5 @@ private fun getData(callback: (List<Article>) -> Unit) {
         if (it?.articles != null) {
             callback(it.articles)
         }
-    }
-}
-
-@Composable
-fun ShowProgressBar() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator()
     }
 }
