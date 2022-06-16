@@ -33,70 +33,85 @@ fun ArticlesContent(navController: NavHostController) {
         mutableStateListOf<Article>()
     }
     if (articles.isEmpty()){
-    getData {
-        articles.addAll(it)
-    }
-    }
-    if (articles.isEmpty()){
-        ShowProgressBar()
+        getData {
+            articles.addAll(it)
+        }
     }
     Scaffold(
         topBar = { TopAppBar(title = { Text(text = "Newsfeed") }) },
         content = { pad ->
-            LazyColumn(
-                modifier = Modifier.padding(pad)
-            ) {
-                itemsIndexed(articles){_, item ->
-                    Column {
-                        val image = item.image?.let { LoadPicture(url = it, defaultImage = DEFAULT_IMAGE).value }
-                        image?.let {
-                            Box(modifier = Modifier
-                                .fillMaxSize()
-                                .border(2.dp, Color.Black)
-                                .clickable(onClick = {
-                                    navController.navigate("${Screen.Detail.route}/${URLEncoder.encode(item.url, StandardCharsets.UTF_8.toString())}")
-                                })
-                            ) {
-                                Image(
-                                    bitmap = it.asImageBitmap(),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(225.dp),
-                                    contentScale = ContentScale.Crop,
-                                    contentDescription = "News Image",
-                                )
-                                Surface(
-                                    color = Color.Black.copy(alpha = 0.6f),
+            Column {
+                if (articles.isEmpty()){
+                    ShowProgressBar()
+                }
+                LazyColumn(
+                    modifier = Modifier.padding(pad)
+                ) {
+                    itemsIndexed(articles) { _, item ->
+                        Column {
+                            val image = item.image?.let {
+                                LoadPicture(
+                                    url = it,
+                                    defaultImage = DEFAULT_IMAGE
+                                ).value
+                            }
+                            image?.let {
+                                Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .height(225.dp)
-                                ){
-                                    Column(
-                                        verticalArrangement = Arrangement.Bottom,
-                                        horizontalAlignment = Alignment.Start,
+                                        .border(2.dp, Color.Black)
+                                        .clickable(onClick = {
+                                            navController.navigate(
+                                                "${Screen.Detail.route}/${
+                                                    URLEncoder.encode(
+                                                        item.url,
+                                                        StandardCharsets.UTF_8.toString()
+                                                    )
+                                                }"
+                                            )
+                                        })
+                                ) {
+                                    Image(
+                                        bitmap = it.asImageBitmap(),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(225.dp),
+                                        contentScale = ContentScale.Crop,
+                                        contentDescription = "News Image",
+                                    )
+                                    Surface(
+                                        color = Color.Black.copy(alpha = 0.6f),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .height(225.dp)
                                     ) {
-                                        Text(
-                                            text = "${item.title}",
-                                            fontSize = 18.sp,
-                                            color = Color.White,
-                                            fontWeight = FontWeight.Bold,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(vertical = 8.dp, horizontal = 16.dp)
-                                        )
-                                        Text(
-                                            text = "${item.author ?: ""}",
-                                            color = Color.White,
-                                            fontWeight = FontWeight.Bold,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(vertical = 8.dp, horizontal = 16.dp)
-                                        )
+                                        Column(
+                                            verticalArrangement = Arrangement.Bottom,
+                                            horizontalAlignment = Alignment.Start,
+                                        ) {
+                                            Text(
+                                                text = "${item.title}",
+                                                fontSize = 18.sp,
+                                                color = Color.White,
+                                                fontWeight = FontWeight.Bold,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                                            )
+                                            Text(
+                                                text = "${item.author ?: ""}",
+                                                color = Color.White,
+                                                fontWeight = FontWeight.Bold,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                                            )
+                                        }
                                     }
                                 }
                             }
-                        }
 
+                        }
                     }
                 }
             }
