@@ -2,6 +2,7 @@ package com.shoogarh.newsheadline.screens
 
 import android.graphics.Bitmap
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,7 @@ fun ArticleWebview(navController: NavHostController, url: String?) {
                         }
                     }
                     settings.javaScriptEnabled = true
+                    settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
                 }
             }, update = { webView ->
                 if (url != null) {
